@@ -66,6 +66,11 @@ public class SurfacePositionMsg extends ExtendedSquitter implements Serializable
 		cpr_encoded_lat = (((msg[2]&0x3)<<15) | ((msg[3]&0xFF)<<7) | ((msg[4]>>>1)&0x7F)) & 0x1FFFF;
 		cpr_encoded_lon = (((msg[4]&0x1)<<16) | ((msg[5]&0xFF)<<8) | (msg[6]&0xFF)) & 0x1FFFF;
 	}
+	
+	/**
+	 * default constructor for Kryo - DO NOT USE
+	 */
+	public SurfacePositionMsg() {}
 
 	/**
 	 * @return NIC supplement that was set before

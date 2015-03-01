@@ -163,6 +163,11 @@ public class ModeSReply implements Serializable {
 		this.payload = payload;
 		this.parity = parity;
 	}
+	
+	/**
+	 * default constructor for Kryo - DO NOT USE
+	 */
+	public ModeSReply() {}
 
 	/**
 	 * @return downlink format of the Mode S reply

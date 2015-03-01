@@ -88,6 +88,11 @@ public class AirspeedHeadingMsg extends ExtendedSquitter implements Serializable
 		if (geo_minus_baro == -1) geo_minus_baro_available = false;
 		if ((msg[6]&0x80)>0) geo_minus_baro *= -1;
 	}
+	
+	/**
+	 * default constructor for Kryo - DO NOT USE
+	 */
+	public AirspeedHeadingMsg() {}
 
 	/**
 	 * Must be checked before accessing heading!
