@@ -61,7 +61,9 @@ public class OskySampleReader {
 								record.get(field.name()));
 				}
 				System.out.println("record #" + msgCount + " (decoded)");
-				decoder.decodeMsg(record.getRawMessage().toString());
+				
+				//////// decode the message and print summary
+				decoder.decodeMsg(record.getTimeAtServer(), record.getRawMessage().toString());
 			}
 			
 		}
