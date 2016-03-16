@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.apache.avro.file.DataFileReader;
@@ -32,7 +30,7 @@ import org.opensky.libadsb.msgs.ModeSReply;
  * This tool is useful if you have messages from the same flight distributed
  * to multiple files or if you have one big file and want to have smaller files.
  * 
- * @author Matthias Schäfer <schaefer@sero-systems.de>
+ * @author Matthias Schäfer <schaefer@opensky-network.org>
  *
  */
 public class AvroSplit {

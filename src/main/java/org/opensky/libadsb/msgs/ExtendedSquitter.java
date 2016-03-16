@@ -24,11 +24,12 @@ import org.opensky.libadsb.exceptions.BadFormatException;
 
 /**
  * Decoder for Mode S extended squitters
- * @author Matthias Schäfer <schaefer@sero-systems.de>
+ * @author Matthias Schäfer <schaefer@opensky-network.org>
  */
 public class ExtendedSquitter extends ModeSReply implements Serializable {
 
 	private static final long serialVersionUID = -7877955448285410779L;
+	
 	private byte capabilities;
 	private byte[] message;
 	private byte format_type_code;
@@ -47,7 +48,7 @@ public class ExtendedSquitter extends ModeSReply implements Serializable {
 		}
 		
 		byte[] payload = getPayload();
-		capabilities = (byte) (payload[0] & 0x7);
+		capabilities = getFirstField();
 		
 		// extract ADS-B message
 		message = new byte[7];

@@ -17,7 +17,7 @@ import org.apache.commons.lang.builder.ReflectionToStringBuilder;
  * Container class for WGS84 positions
  * 
  * @author Markus Fuchs <fuchs@sero-systems.de>
- * @author Matthias Schäfer <schaefer@sero-systems.de>
+ * @author Matthias Schäfer <schaefer@opensky-network.org>
  */
 public class Position implements Serializable {
 	private static final long serialVersionUID = 1562401753853965728L;
@@ -45,6 +45,9 @@ public class Position implements Serializable {
 		setReasonable(true);
 	}
 
+	/**
+	 * @return longitude in decimal degrees
+	 */
 	public Double getLongitude() {
 		return longitude;
 	}
@@ -56,6 +59,9 @@ public class Position implements Serializable {
 		this.longitude = longitude;
 	}
 
+	/**
+	 * @return latitude in decimal degrees
+	 */
 	public Double getLatitude() {
 		return latitude;
 	}
@@ -67,6 +73,9 @@ public class Position implements Serializable {
 		this.latitude = latitude;
 	}
 
+	/**
+	 * @return altitude in meters
+	 */
 	public Double getAltitude() {
 		return altitude;
 	}
@@ -104,9 +113,9 @@ public class Position implements Serializable {
 	}
 	
 	/**
-	 * Haversine two-dimensional distance
-	 * @param other position to calculate distance to
-	 * @return great circle distance between the two positions in meters
+	 * Calculates the two-dimensional great circle distance (haversine)
+	 * @param other position to which we calculate the distance
+	 * @return distance between the this and other position in meters
 	 */
 	public Double distanceTo(Position other) {
 		double lon0r = toRadians(this.longitude);
@@ -120,12 +129,20 @@ public class Position implements Serializable {
 	}
 
 	/**
+	 * This is used to mark positions as unreasonable if a
+	 * plausibility check fails during decoding. Some transponders
+	 * broadcast false positions and if detected, this flag is unset.
+	 * Note that we assume positions to be reasonable by default.
 	 * @return true if position has been flagged reasonable by the decoder
 	 */
 	public boolean isReasonable() {
 		return reasonable;
 	}
 
+	/**
+	 * Set/unset reasonable flag.
+	 * @param reasonable false if position is considered unreasonable
+	 */
 	public void setReasonable(boolean reasonable) {
 		this.reasonable = reasonable;
 	}
