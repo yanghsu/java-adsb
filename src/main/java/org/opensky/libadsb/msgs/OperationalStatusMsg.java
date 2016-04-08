@@ -25,7 +25,7 @@ import org.opensky.libadsb.exceptions.UnspecifiedFormatError;
 
 /**
  * Decoder for ADS-B operational status messages (Page N-50, DO-260B)
- * @author Matthias Schäfer <schaefer@opensky-network.org>
+ * @author Matthias Schäfer (schaefer@opensky-network.org)
  */
 public class OperationalStatusMsg extends ExtendedSquitter implements Serializable {
 
@@ -103,7 +103,7 @@ public class OperationalStatusMsg extends ExtendedSquitter implements Serializab
 
 	/**
 	 * @return whether operational TCAS is available; only for subtype 0
-	 * @throws InfoNotAvailableException 
+	 * @throws MissingInformationException if message has the wrong subtype or capability class code is unknown
 	 */
 	public boolean hasOperationalTCAS() throws MissingInformationException {
 		if ((capability_class_code & 0xC000) != 0)
@@ -116,7 +116,7 @@ public class OperationalStatusMsg extends ExtendedSquitter implements Serializab
 
 	/**
 	 * @return whether 1090ES IN is available 
-	 * @throws InfoNotAvailableException 
+	 * @throws MissingInformationException if capability class code is unknown
 	 */
 	public boolean has1090ESIn() throws MissingInformationException {
 		if ((capability_class_code & 0xC000) != 0)
@@ -128,7 +128,7 @@ public class OperationalStatusMsg extends ExtendedSquitter implements Serializab
 	/**
 	 * @return whether aircraft has capability of sending messages to support Air-Referenced
 	 *         Velocity Reports; only for subtype 0
-	 * @throws InfoNotAvailableException 
+	 * @throws MissingInformationException if message has the wrong subtype or capability class code is unknown
 	 */
 	public boolean supportsAirReferencedVelocity() throws MissingInformationException {
 		if ((capability_class_code & 0xC000) != 0)
@@ -141,7 +141,7 @@ public class OperationalStatusMsg extends ExtendedSquitter implements Serializab
 
 	/**
 	 * @return whether transponder has less than 70 Watts transmit power; only for subtype 1
-	 * @throws InfoNotAvailableException 
+	 * @throws MissingInformationException if message has the wrong subtype or capability class code is unknown
 	 */
 	public boolean hasLowTxPower() throws MissingInformationException {
 		if ((capability_class_code & 0xC000) != 0)
@@ -155,7 +155,7 @@ public class OperationalStatusMsg extends ExtendedSquitter implements Serializab
 	/**
 	 * @return whether aircraft has capability of sending messages to support Target
 	 *         State Reports; only for subtype 0
-	 * @throws InfoNotAvailableException 
+	 * @throws MissingInformationException if message has the wrong subtype or capability class code is unknown
 	 */
 	public boolean supportsTargetStateReport() throws MissingInformationException {
 		if ((capability_class_code & 0xC000) != 0)
@@ -169,7 +169,7 @@ public class OperationalStatusMsg extends ExtendedSquitter implements Serializab
 
 	/**
 	 * @return whether target change reports are supported; only for subtype 0
-	 * @throws InfoNotAvailableException 
+	 * @throws MissingInformationException if message has the wrong subtype or capability class code is unknown
 	 */
 	public boolean supportsTargetChangeReport() throws MissingInformationException {
 		if ((capability_class_code & 0xC000) != 0)
@@ -184,7 +184,7 @@ public class OperationalStatusMsg extends ExtendedSquitter implements Serializab
 
 	/**
 	 * @return whether aircraft has an UAT receiver
-	 * @throws InfoNotAvailableException 
+	 * @throws MissingInformationException if capability class code is unknown
 	 */
 	public boolean hasUATIn() throws MissingInformationException {
 		if ((capability_class_code & 0xC000) != 0)
@@ -195,7 +195,7 @@ public class OperationalStatusMsg extends ExtendedSquitter implements Serializab
 
 	/**
 	 * @return navigation accuracy category for velocity; only for subtype 1
-	 * @throws InfoNotAvailableException 
+	 * @throws MissingInformationException if message has the wrong subtype or capability class code is unknown
 	 */
 	public byte getNACV() throws MissingInformationException {
 		if ((capability_class_code & 0xC000) != 0)
@@ -208,7 +208,7 @@ public class OperationalStatusMsg extends ExtendedSquitter implements Serializab
 
 	/**
 	 * @return NIC supplement C for use on the surface; only for subtype 1
-	 * @throws InfoNotAvailableException 
+	 * @throws MissingInformationException if message has the wrong subtype or capability class code is unknown
 	 */
 	public boolean getNICSupplementC() throws MissingInformationException {
 		if ((capability_class_code & 0xC000) != 0)
@@ -221,7 +221,7 @@ public class OperationalStatusMsg extends ExtendedSquitter implements Serializab
 
 	/**
 	 * @return whether TCAS Resolution Advisory (RA) is active
-	 * @throws InfoNotAvailableException 
+	 * @throws MissingInformationException if operational mode code is unknown
 	 */
 	public boolean hasTCASResolutionAdvisory() throws MissingInformationException {
 		if ((operational_mode_code & 0xC000) != 0)
@@ -232,7 +232,7 @@ public class OperationalStatusMsg extends ExtendedSquitter implements Serializab
 
 	/**
 	 * @return whether the IDENT switch is active
-	 * @throws InfoNotAvailableException 
+	 * @throws MissingInformationException if operational mode code is unknown
 	 */
 	public boolean hasActiveIDENTSwitch() throws MissingInformationException {
 		if ((operational_mode_code & 0xC000) != 0)
@@ -243,7 +243,7 @@ public class OperationalStatusMsg extends ExtendedSquitter implements Serializab
 
 	/**
 	 * @return whether aircraft uses a single antenna or two
-	 * @throws InfoNotAvailableException 
+	 * @throws MissingInformationException if operational mode code is unknown
 	 */
 	public boolean usesSingleAntenna() throws MissingInformationException {
 		if ((operational_mode_code & 0xC000) != 0)
@@ -254,7 +254,7 @@ public class OperationalStatusMsg extends ExtendedSquitter implements Serializab
 
 	/**
 	 * @return system design assurance (see A.1.4.10.14 in RTCA DO-260B)
-	 * @throws InfoNotAvailableException 
+	 * @throws MissingInformationException if operational mode code is unknown
 	 */
 	public byte getSystemDesignAssurance() throws MissingInformationException {
 		if ((operational_mode_code & 0xC000) != 0)
@@ -266,7 +266,7 @@ public class OperationalStatusMsg extends ExtendedSquitter implements Serializab
 	/**
 	 * @return encoded longitudinal distance of the GPS Antenna from the NOSE of the aircraft
 	 *         (see Table A-34, RTCA DO-260B)
-	 * @throws InfoNotAvailableException 
+	 * @throws MissingInformationException if operational mode code is unknown
 	 */
 	public byte getGPSAntennaOffset() throws MissingInformationException {
 		if ((operational_mode_code & 0xC000) != 0)
@@ -279,7 +279,7 @@ public class OperationalStatusMsg extends ExtendedSquitter implements Serializab
 
 	/**
 	 * @return the airplane's length in meters; -1 for unkown
-	 * @throws MissingInformationException 
+	 * @throws MissingInformationException if message has the wrong subtype
 	 */
 	public int getAirplaneLength() throws MissingInformationException {
 		if (subtype_code == 1)
@@ -299,7 +299,7 @@ public class OperationalStatusMsg extends ExtendedSquitter implements Serializab
 
 	/**
 	 * @return the airplane's width in meters
-	 * @throws MissingInformationException 
+	 * @throws MissingInformationException if message has the wrong subtype
 	 */
 	public double getAirplaneWidth() throws MissingInformationException {
 		if (subtype_code == 1)
@@ -386,7 +386,7 @@ public class OperationalStatusMsg extends ExtendedSquitter implements Serializab
 	 *         barometric pressure altitude has been cross-checked against other
 	 *         sources of pressure altitude. If false, altitude data has not been
 	 *         cross-checked.
-	 * @throws MissingInformationException 
+	 * @throws MissingInformationException if this is a surface message
 	 */
 	public boolean getBarometricAltitudeIntegrityCode() throws MissingInformationException {
 		if (subtype_code == 0)
@@ -398,7 +398,7 @@ public class OperationalStatusMsg extends ExtendedSquitter implements Serializab
 	 * @return the Track Angle/Heading allows correct interpretation of the data
 	 *         contained in the Heading/Ground Track subfield of ADS-B Surface
 	 *         Position Messages.
-	 * @throws MissingInformationException 
+	 * @throws MissingInformationException if no additional track/heading info is available
 	 */
 	public boolean getTrackHeadingInfo() throws MissingInformationException {
 		if (subtype_code == 1)
