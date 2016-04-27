@@ -33,11 +33,13 @@ import org.opensky.libadsb.msgs.AllCallReply;
 import org.opensky.libadsb.msgs.AltitudeReply;
 import org.opensky.libadsb.msgs.CommBAltitudeReply;
 import org.opensky.libadsb.msgs.CommBIdentifyReply;
+import org.opensky.libadsb.msgs.CommDExtendedLengthMsg;
 import org.opensky.libadsb.msgs.EmergencyOrPriorityStatusMsg;
 import org.opensky.libadsb.msgs.ExtendedSquitter;
 import org.opensky.libadsb.msgs.IdentificationMsg;
 import org.opensky.libadsb.msgs.IdentifyReply;
 import org.opensky.libadsb.msgs.LongACAS;
+import org.opensky.libadsb.msgs.MilitaryExtendedSquitter;
 import org.opensky.libadsb.msgs.ModeSReply;
 import org.opensky.libadsb.msgs.OperationalStatusMsg;
 import org.opensky.libadsb.msgs.ShortACAS;
@@ -241,9 +243,12 @@ public class ExampleDecoder {
 						" and sensitivity level is "+long_acas.getSensitivityLevel());
 				System.out.println("          RAC is "+(long_acas.hasValidRAC() ? "valid" : "not valid")+
 						" and is "+long_acas.getResolutionAdvisoryComplement()+" (MTE="+long_acas.hasMultipleThreats()+")");
+				System.out.println("          Maximum airspeed is "+long_acas.getMaximumAirspeed()+"m/s.");
 				break;
 			case MILITARY_EXTENDED_SQUITTER:
-				System.out.println("["+icao24+"]: Military extended squitter.");
+				MilitaryExtendedSquitter mil = (MilitaryExtendedSquitter)msg;
+				System.out.println("["+icao24+"]: Military ES of application "+mil.getApplicationCode());
+				System.out.println("          Message is 0x"+tools.toHexString(mil.getMessage()));
 				break;
 			case COMM_B_ALTITUDE_REPLY:
 				CommBAltitudeReply commBaltitude = (CommBAltitudeReply)msg;
@@ -254,7 +259,10 @@ public class ExampleDecoder {
 				System.out.println("["+icao24+"]: Long identify reply: "+commBidentify.getIdentity());
 				break;
 			case COMM_D_ELM:
-				System.out.println("["+icao24+"]: Comm-D ELM message");
+				CommDExtendedLengthMsg commDELM = (CommDExtendedLengthMsg)msg;
+				System.out.println("["+icao24+"]: ELM message w/ sequence no "+commDELM.getSequenceNumber()+
+						" (ACK: "+commDELM.isAck()+")");
+				System.out.println("          Message is 0x"+tools.toHexString(commDELM.getMessage()));
 				break;
 			default:
 			}

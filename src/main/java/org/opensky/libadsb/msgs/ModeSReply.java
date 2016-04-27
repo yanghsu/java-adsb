@@ -289,6 +289,7 @@ public class ModeSReply implements Serializable {
 		
 		ModeSReply other = (ModeSReply)o;
 		return tools.areEqual(this.getPayload(), other.getPayload()) &&
+				tools.areEqual(this.getParity(), other.getParity()) &&
 				this.getDownlinkFormat() == other.getDownlinkFormat() &&
 				this.getFirstField() == other.getFirstField();
 	}
@@ -299,6 +300,8 @@ public class ModeSReply implements Serializable {
 		int sum = downlink_format<<3|first_field;
 		for (int i = 0; i<payload.length; ++i)
 			sum += payload[i]*31^(payload.length-i);
+		for (int i = 0; i<parity.length; ++i)
+			sum += parity[i]*31^(payload.length+parity.length-i);
 		return sum;
 	}
 }
