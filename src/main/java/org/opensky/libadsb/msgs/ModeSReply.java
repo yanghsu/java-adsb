@@ -259,6 +259,10 @@ public class ModeSReply implements Serializable {
 	}
 
 	/**
+	 * Important note: use this method for extended
+	 * squitter/ADS-B messages (DF 17, 18) only! Other messages may have
+	 * their parity field XORed with an ICAO24 transponder address
+	 * or an interrogator ID.
 	 * @return true if parity in message matched calculated parity
 	 */
 	public boolean checkParity() {
@@ -275,5 +279,26 @@ public class ModeSReply implements Serializable {
 				"\tPayload:\t\t"+tools.toHexString(getPayload())+"\n"+
 				"\tParity:\t\t\t"+tools.toHexString(getParity())+"\n"+
 				"\tCalculated Parity:\t"+tools.toHexString(calcParity());
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o == null) return false;
+		if (o == this) return true;
+		if (o.getClass() != getClass()) return false;
+		
+		ModeSReply other = (ModeSReply)o;
+		return tools.areEqual(this.getPayload(), other.getPayload()) &&
+				this.getDownlinkFormat() == other.getDownlinkFormat() &&
+				this.getFirstField() == other.getFirstField();
+	}
+	
+	@Override
+	public int hashCode() {
+		// same method used by String
+		int sum = downlink_format<<3|first_field;
+		for (int i = 0; i<payload.length; ++i)
+			sum += payload[i]*31^(payload.length-i);
+		return sum;
 	}
 }

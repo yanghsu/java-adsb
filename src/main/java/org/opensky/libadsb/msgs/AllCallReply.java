@@ -62,7 +62,7 @@ public class AllCallReply extends ModeSReply implements Serializable {
 	}
 
 	/**
-	 * @return The emitter's capabilities (see ICAO Annex 10 V4)
+	 * @return The emitter's capabilities (see ICAO Annex 10 V4, 3.1.2.5.2.2.1)
 	 */
 	public byte getCapabilities() {
 		return capabilities;
@@ -71,17 +71,49 @@ public class AllCallReply extends ModeSReply implements Serializable {
 	/**
 	 * Some receivers already subtract the crc checksum
 	 * from the parity field right after reception.
-	 * In that case, use {@link #getParity() getParity} to get the interrogator ID.
+	 * In that case, use {@link #getParity()} to get the interrogator ID.<br><br>
+	 * Note: Use {@link #hasValidInterrogatorID()} to check the validity of this field.
 	 * @return the interrogator ID as a 3-byte array
 	 */
 	public byte[] getInterrogatorID() {
 		return interrogator;
 	}
 	
+	/**
+	 * Note: this can be used as an accurate check whether the all call reply
+	 * has been received correctly without knowing the interrogator in advance.
+	 * @return true if the interrogator ID is conformant with Annex 10 V4
+	 */
+	public boolean hasValidInterrogatorID() {
+		assert(interrogator.length == 3);
+		
+		// 3.1.2.3.3.2
+		// the first 17 bits have to be zero
+		if (interrogator[0] != 0 ||
+				interrogator[1] != 0 ||
+				(interrogator[2]&0x80) != 0)
+			return false;
+		
+		int cl = (interrogator[2]>>4)&0x7;
+		
+		// 3.1.2.5.2.1.3
+		// code label is only defined for 0-4
+		if (cl>4) return false;
+		
+		// Note: seems to be used by ACAS
+//		int ii = interrogator[2]&0xF;
+//		// 3.1.2.5.2.1.2.4
+//		// surveillance identifier of 0 shall never be used
+//		if (cl>0 && ii==0) return false;
+		
+		return true;
+	}
+	
 	public String toString() {
 		return super.toString()+"\n"+
 				"All-call Reply:\n"+
 				"\tCapabilities:\t\t"+getCapabilities()+"\n"+
+				"\tValid Interrogator ID:\t\t"+hasValidInterrogatorID()+"\n"+
 				"\tInterrogator:\t\t"+tools.toHexString(getInterrogatorID());
 	}
 
